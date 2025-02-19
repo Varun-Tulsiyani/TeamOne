@@ -1,0 +1,115 @@
+/* Overall Page Styling */
+.faqPage {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #eef2f6, #dce4ec);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Main Content Styling */
+.mainContent {
+    flex-grow: 1;
+    padding: 50px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Header Styling */
+.header {
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 35px;
+    text-align: center;
+    position: relative;
+}
+
+.header::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #007bff;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* Accordion Styling */
+.accordion {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.accordion:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Accordion Expand Icon */
+.MuiAccordionSummary-expandIcon {
+    color: #007bff;
+    transform: scale(1.2);
+}
+
+/* Question Styling */
+.question {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #34495e;
+}
+
+/* Answer Styling */
+.answer {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.8;
+    text-align: left;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    min-width: 260px;
+    background: white;
+    box-shadow: 3px 0px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar:hover {
+    box-shadow: 5px 0px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .faqPage {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: unset;
+        box-shadow: none;
+    }
+
+    .mainContent {
+        padding: 30px 20px;
+    }
+
+    .accordion {
+        max-width: 100%;
+    }
+
+    .header {
+        font-size: 1.8rem;
+    }
+}

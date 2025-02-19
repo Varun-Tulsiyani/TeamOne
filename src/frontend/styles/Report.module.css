@@ -1,0 +1,91 @@
+.report {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    background-color: #f9fafb;
+}
+
+.mainContent {
+    flex-grow: 1;
+    padding: 24px;
+}
+
+.header {
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.divider {
+    margin-bottom: 20px;
+}
+
+.content {
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.testingAiModel {
+    margin-bottom: 12px;
+    color: #37474f;
+    font-weight: bold;
+}
+
+.mitigationSteps {
+    margin-top: 20px;
+}
+
+.mitigationList {
+    padding-left: 20px;
+}
+
+.mitigationList li {
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.button {
+    text-transform: none;
+    font-size: 1rem;
+}
+
+.statsSection {
+    margin-top: 32px;
+}
+
+.statCard {
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.statValue {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1976d2;
+}
+
+.statLabel {
+    font-size: 1rem;
+    color: #555;
+}
+
+.riskLevel {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.riskValue {
+    font-size: 2.5rem;
+    color: #d32f2f;
+    font-weight: bold;
+}

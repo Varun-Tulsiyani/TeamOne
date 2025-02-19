@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #27262C;
+}
+
+.card {
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.title {
+    font-size: 2rem !important;
+    font-weight: bold !important;
+    margin-bottom: 20px !important;
+    color: white !important;
+}
+
+.error {
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    color: red;
+    margin-bottom: 20px !important;
+}
+
+.form {
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.input {
+    margin-bottom: 15px !important;
+}
+
+.button {
+    background-color: #007bff !important;
+    color: white !important;
+    font-weight: bold !important;
+}

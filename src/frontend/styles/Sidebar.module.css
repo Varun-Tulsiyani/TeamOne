@@ -1,0 +1,92 @@
+/* Sidebar Container */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #1e1e2f;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    transition: width 0.3s ease-in-out;
+}
+
+/* Collapsed Sidebar */
+.collapsed {
+    width: 80px;
+}
+
+/* Sidebar Icons */
+.sidebarIcons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Menu Icon */
+.sidebarIcons .icon {
+    font-size: 30px !important;
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebarIcons .icon:hover {
+    transform: scale(1.1);
+}
+
+/* Navigation List */
+.navList {
+    width: 100%;
+    padding: 0;
+}
+
+/* Menu Item */
+.listItem {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, padding 0.3s ease-in-out;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+.listItemIcon {
+    color: white;
+}
+
+/* Active Item */
+.active {
+    background-color: #42425a;
+    border-left: 5px solid #6a6aff;
+}
+
+/* Hover Effects */
+.listItem:hover {
+    background-color: #29293d;
+}
+
+/* Adjustments when Collapsed */
+.collapsed .listItem {
+    justify-content: center;
+    padding: 12px 10px;
+}
+
+.collapsed .listItemText {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .collapsed {
+        width: 60px;
+    }
+}
