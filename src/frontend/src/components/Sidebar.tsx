@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import { Box, List, ListItem, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AssessmentIcon from "@mui/icons-material/Assessment";
@@ -22,8 +22,8 @@ const Sidebar = () => {
     const menuItems = [
         { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
         { text: "Report", icon: <AssessmentIcon />, path: "/report" },
-        { text: "Support", icon: <LiveHelpIcon />, path: "/support" },
-        { text: "Signout", icon: <ExitToAppIcon />, path: "/signout" },
+        { text: "FAQ", icon: <LiveHelpIcon />, path: "/faq" },
+        { text: "Logout", icon: <ExitToAppIcon />, path: "/login" },
     ];
 
     const handleNavigation = (index: number, path: string) => {

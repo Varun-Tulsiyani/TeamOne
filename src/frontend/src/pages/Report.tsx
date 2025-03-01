@@ -1,9 +1,31 @@
-import React from 'react';
-import { Box, Button, Divider, Grid, Paper, Typography } from '@mui/material';
+import React, {useState} from 'react';
+import {Box, Button, Divider, Grid, Modal, Paper, TextField, Typography} from '@mui/material';
 import styles from '../styles/Report.module.css';
 import Sidebar from "../components/Sidebar";
+import {emailReport} from "../services/report";
 
 const Report = ({ className, ...props }: { className: any }) => {
+    const [email, setEmail] = useState<string>("");
+    const [open, setOpen] = useState<boolean>(false);
+
+    const handleOpen = () => setOpen(true)
+    const handleClose = () => setOpen(false)
+
+    const handleEmail = async () => {
+        if (!email || !/\S+@\S+\.\S+/.test(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        try {
+            await emailReport(email);
+            alert("Report has been successfully sent to " + email);
+            setOpen(false);
+        } catch (error) {
+            alert("Failed to send the report. Please try again.");
+        }
+    }
+
     return (
         <Box className={`${styles.report} ${className}`} {...props}>
             <Sidebar />
@@ -35,13 +57,45 @@ const Report = ({ className, ...props }: { className: any }) => {
                     </Box>
 
                     <Box className={styles.actionButtons}>
-                        <Button variant="contained" color="primary" className={styles.button}>
+                        <Button
+                            href="/report/detail"
+                            variant="contained"
+                            color="primary"
+                            className={styles.button}>
                             VIEW REPORT
                         </Button>
-                        <Button variant="outlined" color="primary" className={styles.button}>
+                        <Button
+                            onClick={handleOpen}
+                            variant="outlined"
+                            color="primary"
+                            className={styles.button}>
                             EMAIL REPORT
                         </Button>
                     </Box>
+
+                    {/* Popup Modal for Email Input */}
+                    <Modal open={open} onClose={handleClose}>
+                        <Box className={styles.modal}>
+                            <Typography variant="h6">Enter your email to receive the report:</Typography>
+                            <TextField
+                                type="email"
+                                label="Email"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <Box className={styles.modalActions}>
+                                <Button onClick={handleEmail} variant="contained" color="primary">
+                                    SEND
+                                </Button>
+                                <Button onClick={handleClose} variant="text">
+                                    CANCEL
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Modal>
 
                     <Box className={styles.statsSection}>
                         <Typography variant="h5" gutterBottom>

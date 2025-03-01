@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Register.module.css";
-import { registerUser } from "../services/auth";
+import {register} from "../services/auth";
 import { styled } from "@mui/system";
 
 const CustomTextField = styled(TextField)({
@@ -28,7 +28,7 @@ const Register = () => {
         event.preventDefault();
 
         try {
-            await registerUser(username, email, password);
+            await register(username, password);
             navigate('/dashboard'); // Redirect on success
         } catch (err) {
             setError("Registration failed. Try again!");

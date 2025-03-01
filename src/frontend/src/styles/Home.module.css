@@ -1,0 +1,133 @@
+/* General Styles */
+.root {
+    font-family: "Arial", sans-serif;
+    background: #0a192f;
+    color: white;
+}
+
+/* Navigation Bar */
+.navbar {
+    background: #112240 !important;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #64ffda;
+    cursor: pointer;
+}
+
+.authButton {
+    color: white !important;
+    text-transform: none !important;
+    font-size: 1rem !important;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #0a192f, #233554);
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.ctaButton {
+    margin-top: 20px !important;
+    padding: 14px 28px !important;
+    background: #64ffda !important;
+    color: #0a192f !important;
+    font-size: 1rem !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease-in-out !important;
+}
+
+.ctaButton:hover {
+    background: #52e0c4 !important;
+}
+
+/* Features Section */
+.features {
+    padding: 60px 20px;
+    text-align: center;
+    background: #112240;
+}
+
+h4 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #233554 !important;
+    padding: 20px;
+    border-radius: 10px;
+    width: 280px;
+    transition: 0.3s ease-in-out;
+    text-align: center;
+}
+
+.card:hover {
+    background: #2d4b75 !important;
+}
+
+/* How It Works */
+.howItWorks {
+    padding: 60px;
+    background: white;
+    color: #0a192f;
+    text-align: center;
+}
+
+ol {
+    list-style: decimal;
+    margin: auto;
+    max-width: 600px;
+}
+
+/* Testimonials */
+.testimonials {
+    background: #112240;
+    text-align: center;
+    padding: 50px;
+}
+
+/* CTA Section */
+.cta {
+    text-align: center;
+    padding: 80px;
+}
+
+/* Footer */
+.footer {
+    background: #0a192f;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 40px;
+}
+
+.footerContent {
+    font-size: 1.1rem;
+}
+
+.copyright {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #a8b2d1;
+}

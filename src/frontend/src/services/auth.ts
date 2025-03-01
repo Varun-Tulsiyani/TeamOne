@@ -1,43 +1,43 @@
 import axios from "axios";
 
-// API Base URL
-const API_BASE_URL = "http://localhost:8000";
+const api = axios.create({
+    baseURL: "http://localhost:8000",
+    headers: { "Content-Type": "application/json" }
+});
 
-// Define response interfaces
-interface AuthResponse {
-    msg: string;
-    user: { id: number; username: string; };
-    token?: string;
-}
+// Request Interceptor to Attach Token
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem("authToken");
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
 // Login Function
-export const login = async (username: string, password: string): Promise<AuthResponse> => {
+export const login = async (username: string, password: string) => {
     try {
-        const response = await axios.post<AuthResponse>(`${API_BASE_URL}/login`, {username, password});
-
-        // If token-based auth, store token in localStorage
-        if (response.data.token) {
-            localStorage.setItem("authToken", response.data.token);
+        const response = await api.post("/login", { username, password });
+        if (response.data?.access_token) {
+            localStorage.setItem("authToken", response.data.access_token);
+            return response.data;
         }
-
-        return response.data;
+        throw new Error("Invalid response from server");
     } catch (error: any) {
-        throw new Error(error.response?.data?.detail || "Invalid login credentials");
+        throw new Error(error?.message || "Login failed");
     }
 };
 
 // Register Function
-export const registerUser = async (
-    username: string,
-    email: string,
-    password: string
-): Promise<AuthResponse> => {
+export const register = async (username: string, password: string, role: string = "") => {
     try {
-        const response = await axios.post<AuthResponse>(`${API_BASE_URL}/register`, {username, password});
-
+        const response = await api.post("/register", { username, password, role });
         return response.data;
     } catch (error: any) {
-        throw new Error(error.response?.data?.detail || "Registration failed");
+        throw new Error(error?.message || "Registration failed");
     }
 };
 
