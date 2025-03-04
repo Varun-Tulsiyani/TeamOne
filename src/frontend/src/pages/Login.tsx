@@ -5,16 +5,9 @@ import styles from "../styles/Login.module.css";
 import { login } from "../services/auth";
 import { styled } from "@mui/system";
 
+// No custom styles for TextField
 const CustomTextField = styled(TextField)({
-    "& .MuiInput-root": {
-        borderBottom: "2px solid white", // Custom underline color
-    },
-    "& .MuiInputLabel-root": {
-        color: "#999", // Label color
-    },
-    "& .MuiInputBase-input": {
-        color: "#333", // Text color inside input
-    },
+    // No custom styles
 });
 
 const Login = () => {
@@ -49,7 +42,7 @@ const Login = () => {
                         id="username"
                         label="Username"
                         variant="standard"
-                        fullWidth
+                        fullWidth // Ensure fullWidth is set
                         required
                         onChange={(e) => setUsername(e.target.value)}
                         className={styles.input}
@@ -60,14 +53,14 @@ const Login = () => {
                         label="Password"
                         type="password"
                         variant="standard"
-                        fullWidth
+                        fullWidth // Ensure fullWidth is set
                         required
                         onChange={(e) => setPassword(e.target.value)}
                         className={styles.input}
                     />
 
                     <Button
-                        fullWidth
+                        fullWidth // Ensure fullWidth is set
                         type="submit"
                         variant="contained"
                         color="primary"
