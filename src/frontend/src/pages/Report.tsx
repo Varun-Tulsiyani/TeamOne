@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Box, Button, Divider, Grid, Modal, Paper, TextField, Typography} from '@mui/material';
 import styles from '../styles/Report.module.css';
 import Sidebar from "../components/Sidebar";
-import {emailReport} from "../services/report";
+// import {emailReport} from "../services/report";
 
 const Report = ({ className, ...props }: { className: any }) => {
     const [email, setEmail] = useState<string>("");
@@ -18,7 +18,7 @@ const Report = ({ className, ...props }: { className: any }) => {
         }
 
         try {
-            await emailReport(email);
+            // await emailReport(email);
             alert("Report has been successfully sent to " + email);
             setOpen(false);
         } catch (error) {

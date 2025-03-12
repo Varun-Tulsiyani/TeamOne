@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     min-height: 100vh;
-    background-color: #f4f6f8;
+    background: linear-gradient(to bottom, #0a192f, #dce4ec);
 }
 
 .mainContent {
@@ -137,4 +137,4 @@
     border-top: 20px;
     transform: rotate(-90deg);
     position: relative;
-}
+}   

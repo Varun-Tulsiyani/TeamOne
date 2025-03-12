@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Report from "./pages/Report";
 import GetStarted from "./pages/GetStarted";
+import ForgotPassword from './pages/ForgotPassword';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/report" element={<Report className={undefined}/>}/>
                     <Route path="/get-started" element={<GetStarted className={undefined} />}/>
+                    <Route path="/forgot-password" element={<ForgotPassword />}/>
                     {/*
                     <Route path="/" element={<Home />}/>
                     <Route path="/" element={<Home />}/>

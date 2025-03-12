@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: row;
     min-height: 100vh;
-    background: linear-gradient(to bottom, #eef2f6, #dce4ec);
+    background: linear-gradient(to bottom, #0a192f, #dce4ec);
     font-family: 'Inter', sans-serif;
 }
 
@@ -21,7 +21,7 @@
 .header {
     font-weight: 700;
     font-size: 2.2rem;
-    color: #2c3e50;
+    color: white;
     margin-bottom: 35px;
     text-align: center;
     position: relative;

@@ -13,12 +13,8 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import { Bar } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
 import styles from '../styles/DetailReport.module.css';
 import Sidebar from "../components/Sidebar";
-
-Chart.register(...registerables);
 
 const vulnerabilities = [
     { type: "SQL Injection", severity: "Critical", detected: 25 },
@@ -90,10 +86,10 @@ const DetailReport = ({ className, ...props }: { className: any }) => {
                 </Box>
 
                 {/* Bar Chart Representation */}
-                <Box className={styles.chartSection}>
+                {/* <Box className={styles.chartSection}>
                     <Typography variant="h6">Vulnerability Distribution</Typography>
                     <Bar data={chartData} />
-                </Box>
+                </Box> */}
 
                 {/* Mitigation Steps */}
                 <Box className={styles.mitigationSection}>

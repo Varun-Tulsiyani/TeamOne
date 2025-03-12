@@ -56,16 +56,20 @@
 }
 
 /* Features Section */
+.features h4 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    /* padding-top: 40px; */
+    padding-bottom: 20px;
+}
+
 .features {
-    padding: 60px 20px;
+    padding: 50px 20px; /* Increased from 60px */
     text-align: center;
     background: #112240;
 }
 
-h4 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
+
 
 .grid {
     display: flex;
@@ -81,6 +85,7 @@ h4 {
     width: 280px;
     transition: 0.3s ease-in-out;
     text-align: center;
+    color: white !important;
 }
 
 .card:hover {
@@ -90,15 +95,17 @@ h4 {
 /* How It Works */
 .howItWorks {
     padding: 60px;
-    background: white;
-    color: #0a192f;
+    background: #354e79; /* Light gray background */
+    color: #ffffff;
     text-align: center;
 }
 
-ol {
-    list-style: decimal;
-    margin: auto;
+
+.howItWorks ol {
+    list-style-position: inside; /* Moves the numbers closer to text */
+    padding-left: 0; /* Removes default padding */
     max-width: 600px;
+    margin: auto;
 }
 
 /* Testimonials */
