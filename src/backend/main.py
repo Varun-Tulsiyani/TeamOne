@@ -1,24 +1,19 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session, relationship
-from passlib.context import CryptContext
-from pydantic import BaseModel
+from fastapi.responses import JSONResponse, Response, FileResponse
+from sqlalchemy.orm import Session
+from pydantic import BaseModel, EmailStr
 from typing import Annotated
-import jwt
+from config import ACCESS_TOKEN_EXPIRE_MINUTES, SCANNER_URL
+from database import engine, get_db
+from models import Base, User
+from security import (
+    get_password_hash, verify_password, create_access_token, verify_access_token, token_blacklist
+)
+import requests
 import datetime
-import os
-
-DATABASE_URL = "postgresql://postgres:root@localhost:5432/Protego"
-SECRET_KEY = os.getenv("SECRET_KEY", "your_super_secret_key")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
-
-# SQLAlchemy setup
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+import uvicorn
+import tempfile
 
 # FastAPI app
 app = FastAPI()
@@ -32,47 +27,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-# Dependency for getting a database session
-class User(Base):
-    __tablename__ = "users"
-
-    id: int = Column(Integer, primary_key=True, index=True)
-    username: str = Column(String, unique=True, index=True, nullable=False)
-    hashed_password: str = Column(String, nullable=False)
-    role = Column(String, default="user")
-
-
-class Scan(Base):
-    __tablename__ = "scans"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    scan_url = Column(String, nullable=False)
-    attack_type = Column(String, nullable=False)
-    cnn_model = Column(String, nullable=False)
-    risk_level = Column(Text, nullable=False)
-    recommendations = Column(Text, nullable=True)
-
-    user = relationship("User", back_populates="scans")
-
-
 # Create the database tables
 Base.metadata.create_all(bind=engine)
-
-
-# Dependency to get a DB session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-User.scans = relationship("Scan", back_populates="user")
 
 
 # Pydantic models
@@ -87,37 +43,16 @@ class UserLogin(BaseModel):
     password: str
 
 
-# Utility functions for password handling
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+class EmailRequest(BaseModel):
+    recipient_email: EmailStr
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+class ScanRequest(BaseModel):
+    model_url: str
+    cnn_type: str
+    attack_type: str
+    target_class: int = 0
 
-
-def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
-    to_encode = data.copy()
-    expire = datetime.datetime.now(datetime.UTC) + (expires_delta or datetime.timedelta(minutes=30))
-    to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-
-def verify_token(token: str):
-    if token in token_blacklist:
-        raise jwt.InvalidTokenError("Token is blacklisted")
-
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
-    except jwt.ExpiredSignatureError:
-        raise jwt.InvalidTokenError("Token has expired")
-    except jwt.InvalidTokenError:
-        raise jwt.InvalidTokenError("Invalid token")
-
-
-# Token Blacklist for Logout
-token_blacklist = set()
 
 # Dependency injection
 db_dependency = Annotated[Session, Depends(get_db)]
@@ -170,7 +105,7 @@ async def logout(token: str):
 # Delete User Endpoint
 @app.delete("/delete", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(token: str, db: db_dependency):
-    payload = verify_token(token)
+    payload = verify_access_token(token)
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -191,7 +126,42 @@ def delete_user(token: str, db: db_dependency):
     return {"msg": "User deleted successfully"}
 
 
-if __name__ == "__main__":
-    import uvicorn
+@app.post("/scan")
+async def perform_scan(request: ScanRequest):
+    try:
+        print(f"Received request: {request.model_dump()}")
+        response = requests.post(SCANNER_URL, json=request.model_dump())
 
+        # If the response is not successful, raise an error
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail="Scanner backend error")
+
+        # Check Content-Type from the response
+        content_type = response.headers.get("Content-Type", "")
+
+        if "application/pdf" in content_type:
+            # Handle PDF response
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_pdf:
+                tmp_pdf.write(response.content)
+                tmp_pdf_path = tmp_pdf.name
+
+            pdf_bytes = response.content
+            return Response(
+                content=pdf_bytes,
+                media_type="application/pdf",
+                headers={"Content-Disposition": "attachment; filename=security_report.pdf"}
+            )
+        else:
+            # Handle JSON response
+            return JSONResponse(content=response.json(), status_code=200)
+
+    except requests.RequestException as e:
+        print(f"Request Error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to communicate with scanner backend.")
+    except Exception as e:
+        print(f"Unexpected Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
