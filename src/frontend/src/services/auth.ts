@@ -1,23 +1,6 @@
-import axios from "axios";
+import api from "./api";
+import {useAuth} from "../components/AuthProvider";
 
-const api = axios.create({
-    baseURL: "http://localhost:8000",
-    headers: { "Content-Type": "application/json" }
-});
-
-// Request Interceptor to Attach Token
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem("authToken");
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
-
-// Login Function
 export const login = async (username: string, password: string) => {
     try {
         const response = await api.post("/login", { username, password });
@@ -27,21 +10,27 @@ export const login = async (username: string, password: string) => {
         }
         throw new Error("Invalid response from server");
     } catch (error: any) {
-        throw new Error(error?.message || "Login failed");
+        const errorMessage = error.response?.data?.detail || "Login failed. Please check your credentials.";
+        throw new Error(errorMessage);
     }
 };
 
-// Register Function
 export const register = async (username: string, password: string, role: string = "") => {
     try {
         const response = await api.post("/register", { username, password, role });
         return response.data;
     } catch (error: any) {
-        throw new Error(error?.message || "Registration failed");
+        throw new Error(error.response?.data?.detail || "Registration failed");
     }
 };
 
-// Logout Function (Optional)
-export const logout = () => {
+export const logout = async () => {
     localStorage.removeItem("authToken");
+    try {
+        const response = await api.post("/logout");
+        return response.data;
+    } catch (error: any) {
+        console.error("Logout API call failed", error);
+        return { message: "Logged out (but server request failed)" };
+    }
 };

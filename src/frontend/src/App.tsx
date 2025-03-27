@@ -4,35 +4,31 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import FAQ from "./pages/FAQ";
-import DetailReport from "./pages/DetailReport";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Report from "./pages/Report";
 import GetStarted from "./pages/GetStarted";
 import ForgotPassword from './pages/ForgotPassword';
+import {AuthProvider, Protected} from "./components/AuthProvider";
 
 function App() {
     return (
-        <BrowserRouter>
-            <div className="App">
-                <Routes>
-                    <Route path="/dashboard" element={<Dashboard className={undefined}/>}/>
-                    <Route path="/report/detail" element={<DetailReport className={undefined}/>}/>
-                    <Route path="/faq" element={<FAQ className={undefined}/>}/>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/register" element={<Register/>}/>
-                    <Route path="/report" element={<Report className={undefined}/>}/>
-                    <Route path="/get-started" element={<GetStarted className={undefined} />}/>
-                    <Route path="/forgot-password" element={<ForgotPassword />}/>
-                    {/*
-                    <Route path="/" element={<Home />}/>
-                    <Route path="/" element={<Home />}/>
-                    <Route path="/" element={<Home />}/>
-*/}
-                </Routes>
-            </div>
-        </BrowserRouter>
+        <AuthProvider>
+            <BrowserRouter>
+                <div className="App">
+                    <Routes>
+                        <Route path="/dashboard" element={<Protected><Dashboard/></Protected>}/>
+                        <Route path="/faq" element={<FAQ/>}/>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/report" element={<Protected><Report/></Protected>}/>
+                        <Route path="/get-started" element={<Protected><GetStarted/></Protected>}/>
+                        <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </AuthProvider>
     );
 }
 

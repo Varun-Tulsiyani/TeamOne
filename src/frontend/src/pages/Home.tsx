@@ -21,7 +21,7 @@ const Home = () => {
             <AppBar position="static" className={styles.navbar}>
                 <Toolbar className={styles.toolbar}>
                     <Typography variant="h6" className={styles.logo} onClick={() => navigate("/")}>
-                        AI Scanner
+                        PROTEGO
                     </Typography>
                     <div>
                         <Button className={styles.authButton} onClick={handleMenuOpen}>
@@ -38,7 +38,7 @@ const Home = () => {
             {/* Hero Section */}
             <div className={styles.hero}>
                 <Container className={styles.container}>
-                    <Typography variant="h2">AI Vulnerability Scanner</Typography>
+                    <Typography variant="h2">Protego</Typography>
                     <Typography variant="subtitle1">Protecting AI Models from Query-Based Attacks</Typography>
                     <Button className={styles.ctaButton} onClick={() => navigate("/get-started")}>
                         Get Started
@@ -89,12 +89,8 @@ const Home = () => {
 
             {/* Footer */}
             <footer className={styles.footer}>
-                <div className={styles.footerContent}>
-                    <Typography variant="body1">AI Vulnerability Scanner</Typography>
-                    <Typography variant="body2">TeamOne</Typography>
-                </div>
                 <div className={styles.copyright}>
-                    &copy; {new Date().getFullYear()} AI Scanner. All rights reserved.
+                    &copy; {new Date().getFullYear()} Protego by TeamOne. All rights reserved.
                 </div>
             </footer>
         </div>

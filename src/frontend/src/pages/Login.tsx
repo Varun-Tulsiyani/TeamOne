@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Login.module.css";
 import { login } from "../services/auth";
 import { styled } from "@mui/system";
+import {useAuth} from "../components/AuthProvider";
 
 // No custom styles for TextField
 const CustomTextField = styled(TextField)({
@@ -19,20 +20,30 @@ const CustomTextField = styled(TextField)({
 });
 
 const Login = () => {
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const { authenticated, login: authLogin } = useAuth();
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (authenticated) {
+            navigate("/dashboard");
+        }
+    }, [authenticated, navigate]);
 
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
 
         try {
-            await login(username, password); // Call login services
-            navigate('/dashboard'); // Redirect to dashboard on success
+            const response = await login(username, password);
+
+            localStorage.setItem("authToken", response.access_token);
+
+            authLogin(response.access_token);
+           navigate("/dashboard");
         } catch (err) {
             setError("Invalid username or password!");
-            console.error('Login error:', err);
         }
     };
 
@@ -50,7 +61,7 @@ const Login = () => {
                         id="username"
                         label="Username"
                         variant="standard"
-                        fullWidth // Ensure fullWidth is set
+                        fullWidth
                         required
                         onChange={(e) => setUsername(e.target.value)}
                         className={styles.input}
@@ -61,14 +72,14 @@ const Login = () => {
                         label="Password"
                         type="password"
                         variant="standard"
-                        fullWidth // Ensure fullWidth is set
+                        fullWidth
                         required
                         onChange={(e) => setPassword(e.target.value)}
                         className={styles.input}
                     />
 
                     <Button
-                        fullWidth // Ensure fullWidth is set
+                        fullWidth
                         type="submit"
                         variant="contained"
                         color="primary"
@@ -76,8 +87,8 @@ const Login = () => {
                     >
                         Login
                     </Button>
-                        <a href={"/forgot-password"} className={styles.forgotPassword}>Forgot Password</a>
-                    
+
+                    <a href={"/forgot-password"} className={styles.forgotPassword}>Forgot Password</a>
                 </form>
             </div>
         </div>

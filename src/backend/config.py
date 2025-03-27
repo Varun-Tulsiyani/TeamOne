@@ -9,4 +9,4 @@ SMTP_EMAIL = os.getenv("SMTP_EMAIL")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
-SCANNER_URL = "<NGROK_URL>/scan"
+SCANNER_URL = "https://9613-35-247-24-156.ngrok-free.app/scan"

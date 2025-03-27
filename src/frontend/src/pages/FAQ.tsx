@@ -33,10 +33,10 @@ const faqData = [
     }
 ];
 
-const FAQ = ({ className, ...props }: { className: any }) => {
+const FAQ = ({...props}) => {
     return (
-        <Box className={`${styles.faqPage} ${className}`} {...props}>
-            <Sidebar />
+        <Box className={styles.faqPage} {...props}>
+            <Sidebar/>
 
             {/* Main Content */}
             <Box className={styles.mainContent}>
@@ -46,7 +46,7 @@ const FAQ = ({ className, ...props }: { className: any }) => {
 
                 {faqData.map((faq, index) => (
                     <Accordion key={index} className={styles.accordion}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                             <Typography variant="h6" className={styles.question}>
                                 {faq.question}
                             </Typography>

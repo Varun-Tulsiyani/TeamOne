@@ -1,15 +1,52 @@
-import React, {useState} from 'react';
-import {Box, Button, Divider, Grid, Modal, Paper, TextField, Typography} from '@mui/material';
-import styles from '../styles/Report.module.css';
+import React, {useEffect, useState} from "react";
+import {Box, Button, Modal, TextField, Typography} from "@mui/material";
+import styles from "../styles/Report.module.css";
 import Sidebar from "../components/Sidebar";
+import {getReport, IReport} from "../services/report";
+import {styled} from "@mui/system";
 // import {emailReport} from "../services/report";
 
-const Report = ({ className, ...props }: { className: any }) => {
+const CustomTypography = styled(Typography)({
+    color: "white"
+});
+
+const Report = ({...props}) => {
+    const [report, setReport] = useState<IReport>({
+        attack_type: "a",
+        cnn_model: "a",
+        created_at: "a",
+        execution_time: "",
+        iterations: 0,
+        mitigations: "",
+        scan_url: "",
+        target_class: 0,
+        user_id: 0
+    });
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const [email, setEmail] = useState<string>("");
     const [open, setOpen] = useState<boolean>(false);
 
-    const handleOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    useEffect(() => {
+        const fetchReport = async () => {
+            try {
+                const data = await getReport();
+                setReport(data);
+            } catch (error: any) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchReport();
+    }, []);
+
+    if (loading) return <p>Loading report...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     const handleEmail = async () => {
         if (!email || !/\S+@\S+\.\S+/.test(email)) {
@@ -24,106 +61,74 @@ const Report = ({ className, ...props }: { className: any }) => {
         } catch (error) {
             alert("Failed to send the report. Please try again.");
         }
-    }
+    };
 
     return (
-        <Box className={`${styles.report} ${className}`} {...props}>
-            <Sidebar />
+        <Box className={styles.report} {...props}>
+            <Sidebar/>
 
-            {/* Main Content Area */}
-            <Box className={styles.mainContent}>
-                <Box className={styles.header}>
-                    <Typography variant="h4">Report</Typography>
-                </Box>
-                <Divider className={styles.divider} />
+            {report && (
+                <Box className={styles.container}>
+                    {/* Left Side: Main Content */}
+                    <Box className={styles.leftSide}>
+                        <CustomTypography variant="h4">TESTING AI MODEL</CustomTypography>
+                        <CustomTypography variant="subtitle1">
+                            Model - <strong>{report.cnn_model}</strong>
+                        </CustomTypography>
+                        <CustomTypography variant="subtitle1">
+                            Attack - <strong>{report.attack_type}</strong>
+                        </CustomTypography>
+                        <CustomTypography variant="subtitle1">
+                            Vulnerability - <strong>Gradient Exploit Vulnerability</strong>
+                        </CustomTypography>
 
-                <Box className={styles.content}>
-                    <Typography variant="h6" className={styles.testingAiModel}>
-                        TESTING AI MODEL
-                    </Typography>
-                    <Typography variant="subtitle1">Model - <strong>ResNet-50</strong></Typography>
-                    <Typography variant="subtitle1">Attack - <strong>Adversarial Input Attack</strong></Typography>
-                    <Typography variant="subtitle1">Vulnerability - <strong>Gradient Exploit Vulnerability</strong></Typography>
-
-                    <Box className={styles.mitigationSteps}>
-                        <Typography variant="h6">Mitigation Steps:</Typography>
-                        <ol className={styles.mitigationList}>
-                            <li>Implement input validation to sanitize and verify all incoming data.</li>
-                            <li>Add adversarial training to make the CNN model robust against adversarial attacks.</li>
-                            <li>Enable monitoring tools to detect unusual query patterns or data access.</li>
-                            <li>Mask sensitive data in logs or responses.</li>
-                            <li>Apply encryption for stored sensitive data.</li>
-                        </ol>
+                        {/* Mitigation Steps */}
+                        <Box className={styles.mitigationSteps}>
+                            <CustomTypography variant="h6">Mitigation Steps:</CustomTypography>
+                            <ol className={styles.mitigationList}>
+                                <CustomTypography>{report.mitigations}</CustomTypography>
+                            </ol>
+                        </Box>
                     </Box>
 
-                    <Box className={styles.actionButtons}>
-                        <Button
-                            href="/report/detail"
-                            variant="contained"
-                            color="primary"
-                            className={styles.button}>
-                            VIEW REPORT
-                        </Button>
-                        <Button
-                            onClick={handleOpen}
-                            variant="outlined"
-                            color="primary"
-                            className={styles.button}>
-                            EMAIL REPORT
-                        </Button>
-                    </Box>
+                    {/* Right Side: Vulnerabilities & Risk */}
+                    <Box className={styles.rightSide}>
+                        {/* Action Buttons */}
+                        <Box className={styles.buttonContainer}>
+                            <Button onClick={handleOpen} variant="outlined" sx={{ color: "white", borderColor: "white" }}>
+                                EMAIL REPORT
+                            </Button>
+                        </Box>
 
-                    {/* Popup Modal for Email Input */}
-                    <Modal open={open} onClose={handleClose}>
-                        <Box className={styles.modal}>
-                            <Typography variant="h6">Enter your email to receive the report:</Typography>
-                            <TextField
-                                type="email"
-                                label="Email"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <Box className={styles.modalActions}>
-                                <Button onClick={handleEmail} variant="contained" color="primary">
-                                    SEND
-                                </Button>
-                                <Button onClick={handleClose} variant="text">
-                                    CANCEL
-                                </Button>
+                        {/* Popup Modal for Email Input */}
+                        <Modal open={open} onClose={handleClose} className={styles.modal}>
+                            <Box className={styles.modal}>
+                                <CustomTypography variant="h6">Enter your email to receive the
+                                    report:</CustomTypography>
+                                <TextField
+                                    type="email"
+                                    label="Email"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                                <Box className={styles.modalActions}>
+                                    <Button onClick={handleEmail} variant="contained"
+                                            sx={{color: "white", borderColor: "white"}}>
+                                        SEND
+                                    </Button>
+                                    <Button onClick={handleClose} variant="text"
+                                            sx={{color: "white", borderColor: "white"}}>
+                                        CANCEL
+                                    </Button>
+                                </Box>
                             </Box>
-                        </Box>
-                    </Modal>
-
-                    <Box className={styles.statsSection}>
-                        <Typography variant="h5" gutterBottom>
-                            VULNERABILITIES
-                        </Typography>
-                        <Grid container spacing={3}>
-                            {[
-                                { label: "IDENTIFIED", value: 2115 },
-                                { label: "HIGH", value: 812 },
-                                { label: "CONFIRMED", value: 1695 },
-                                { label: "CRITICAL", value: 203 }
-                            ].map((stat, index) => (
-                                <Grid item xs={12} sm={6} md={3} key={index}>
-                                    <Paper className={styles.statCard}>
-                                        <Typography variant="h4" className={styles.statValue}>{stat.value}</Typography>
-                                        <Typography variant="subtitle1" className={styles.statLabel}>{stat.label}</Typography>
-                                    </Paper>
-                                </Grid>
-                            ))}
-                        </Grid>
-
-                        <Box className={styles.riskLevel}>
-                            <Typography variant="h6">RISK LEVEL</Typography>
-                            <Typography variant="h4" className={styles.riskValue}>80%</Typography>
-                        </Box>
+                        </Modal>
                     </Box>
                 </Box>
-            </Box>
+            )}
         </Box>
     );
 };

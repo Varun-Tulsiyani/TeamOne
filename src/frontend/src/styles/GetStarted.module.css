@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     min-height: 100vh;
-    background-color: #f4f6f8;
+    background: linear-gradient(to bottom, #0a192f, #dce4ec);
 }
 
 .mainContent {
@@ -34,42 +34,21 @@
 
 /* Progress Container (same width as input boxes) */
 .progressContainer {
+}
+
+/* Right Half: Instruction and Button */
+.actionContainer {
     width: 100%;
-    max-width: 750px;
+    max-width: 700px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     background: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-top: 24px;
-}
-
-/* Left Half: Donut Semi-Circle Progress */
-.progressWrapper {
-    width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.progressText {
-    position: absolute;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #1976d2;
-    top: 50%;
-}
-
-/* Right Half: Instruction and Button */
-.actionContainer {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     gap: 12px;
 }
 
