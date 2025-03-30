@@ -1,12 +1,7 @@
 # Protego
 
-> An AI vulnerability scanner that performs **Model Inversion Attacks** (Score-based and Boundary-based) on deployed Convolutional Neural Networks like ResNet, EfficientNet, and MobileNet.
+> **Protego** is an AI Vulnerability Scanner designed to simulate and analyze model inversion attacks on deployed CNN models during their inference phase. It helps researchers and developers understand potential vulnerabilities in their AI systems — especially where there are currently no off-the-shelf solutions for this kind of threat.
 
----
-
-## What is Protego?
-
-**Protego** is a security-focused tool designed to simulate and analyze model inversion attacks on deployed CNN models during their inference phase. It helps researchers and developers understand potential vulnerabilities in their AI systems — especially where there are currently no off-the-shelf solutions for this kind of threat.
 
 ---
 
@@ -25,6 +20,7 @@
 
 ```
 TeamOne/
+├── documents/           # Reports and Posters
 ├── src/
 │   ├── backend/         # FastAPI backend logic and API routes
 │   ├── frontend/        # React + TypeScript frontend
@@ -45,39 +41,44 @@ TeamOne/
 
 ## Getting Started
 
-### Frontend Setup
+1. **Create Database**
+   - Create a PostgreSQL database named `protego`.
 
-```bash
-cd src/frontend
-npm install
-npm start
-```
+2. **Open Two Terminals**
+   - One for backend, one for frontend.
 
-###  Backend Setup
+3. **Install Dependencies**
+   - **Backend:**
+     ```bash
+     cd src/backend  
+     pip install -r requirements.txt
+     ```
+   - **Frontend:**
+     ```bash
+     cd src/frontend  
+     npm install
+     ```
 
-The backend is built using Python + FastAPI. You can run it through an IDE like **PyCharm**, or directly with Uvicorn (you may need to adapt this based on your environment):
+4. **Run Servers**
+   - **Backend:**
+     ```bash
+     python main.py
+     ```
+   - **Frontend:**
+     ```bash
+     npm start
+     ```
 
-```bash
-cd src/backend
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-> ⚠️ A database is required for registering and logging in before accessing protected routes (like dashboard, reports, etc).
-
----
-
-## Usage
-
-1. **Start both frontend and backend servers.**
-2. **Log in or register** on the frontend.
-3. Navigate to **Dashboard** → **Get Started**.
-4. Provide:
-    - Model URL
-    - Attack type (Score-based / Boundary-based)
-    - Model type (ResNet / EfficientNet / MobileNet)
-5. Click **Launch**.
-6. The backend performs the attack and:
+5. **Start both frontend and backend servers.**
+6. Visit `http://localhost:3000`, create an account, and log in.
+7. **Log in or Register**
+8. Navigate to **Dashboard** → **Get Started**.
+9. Provide:
+   - Model URL
+   - Attack type (Score-based / Boundary-based)
+   - Model type (ResNet / EfficientNet / MobileNet)
+10. Click **Launch**.
+11. The backend performs the attack and:
     - Triggers an automatic **PDF report download**
     - Sends the result as a dictionary for rendering on the **Report** page.
 
@@ -85,6 +86,6 @@ uvicorn main:app --reload
 
 ##  Demo
 
-A demo video will be available soon on [YouTube](#) — stay tuned!
+[Demo Video](https://youtu.be/wE6DxJO5-ls) on YouTube!
 
 ---

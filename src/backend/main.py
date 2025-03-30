@@ -25,8 +25,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet
 from PyPDF2 import PdfWriter, PdfReader
-
-from src.backend.scanner import AIVulnerabilityScanner, CNNType, AttackType
+from scanner import AIVulnerabilityScanner, CNNType, AttackType
 
 # FastAPI app
 app = FastAPI()
